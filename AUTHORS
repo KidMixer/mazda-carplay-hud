@@ -1,0 +1,17 @@
+KID MIXER-MODER
+    CarPlay -> HUD bridge: iAP2 maneuver decode + route-window selection,
+    jciCARPLAY process gate + devmgr/msgrcv interposition, the OEM libjcidbus/VBS_NAVI
+    HUD transport (reverse-engineered from the OEM libraries with Ghidra), the
+    cross-compile Makefile, install scripts and documentation.
+
+Derived code (AGPL-3.0 — the reason this work is AGPL-3.0):
+
+    Trevelopment / Bryan Adams et al. — headunit
+        https://github.com/Trevelopment/headunit
+        HUD guidance sender (hud/hud_send.*), vendored CMU D-Bus proxies (dbus/),
+        and the cross-compile build pattern.
+
+Build dependency (independent third-party, not authored here, its own license):
+
+    lmagder — m3-toolchain (ARM cross-compiler, git submodule)
+        https://github.com/lmagder/m3-toolchain

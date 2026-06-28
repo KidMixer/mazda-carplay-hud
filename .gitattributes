@@ -1,0 +1,9 @@
+# Keep LF in the repo for all text, and check out LF everywhere (even on Windows)
+# so the install scripts / Makefile stay Unix-clean for the Linux CMU.
+* text=auto eol=lf
+
+*.sh      text eol=lf
+*.conf    text eol=lf
+Makefile  text eol=lf
+*.cpp     text eol=lf
+*.h       text eol=lf

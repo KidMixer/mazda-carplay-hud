@@ -1,0 +1,3 @@
+[submodule "mazda/m3-toolchain"]
+	path = mazda/m3-toolchain
+	url = https://github.com/lmagder/m3-toolchain

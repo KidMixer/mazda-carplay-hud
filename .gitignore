@@ -1,0 +1,15 @@
+# Build output
+mazda/build/
+*.o
+*.d
+*.so
+
+# The toolchain is a git submodule, not checked in directly
+mazda/m3-toolchain/
+
+# Editor / OS cruft
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
