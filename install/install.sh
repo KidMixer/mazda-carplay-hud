@@ -1,22 +1,9 @@
 #!/bin/sh
 # ============================================================================
-#  CarPlay -> HUD bridge installer for Mazda CMU (MAZ_CMU-150 / FW 74.00.324)
+#  CarPlay navigation on the HUD  --  installer for Mazda CMU (MAZ_CMU-150 / FW 74.00.324)
 #  CX-5 KF / CX-8 2018 and same-platform Mazda Connect units.
 #
-#  Installs libpatch-blmjcicarplay.so as an LD_PRELOAD shim into the jciCARPLAY
-#  service (same mechanism the OEM Android-Auto mod uses for jciAAPA), enables
-#  NaviSupported so the head unit advertises native-nav capability over iAP2,
-#  and makes the shim auto-load at every boot.
-#
-#  NO license / MAC binding / network — plain open-source install.
-#
-#  Usage:
-#    - Over SSH:  sh install.sh
-#    - From USB:  via run.sh (see INSTALL.md)
-#
-#  Safe + reversible: the rootfs is read-only relfs; we remount rw only briefly,
-#  back up every file before editing, and uninstall.sh restores stock. Worst
-#  case a normal reboot returns the unit to stock anyway.
+#  ==================  PATCH BY: KID MIXER-MODER  ==================
 # ============================================================================
 set -u
 TAG="[cp-hud install]"

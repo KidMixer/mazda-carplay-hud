@@ -1,8 +1,9 @@
 #!/bin/sh
 # ============================================================================
-#  Uninstaller for the CarPlay -> HUD bridge. Restores stock config from the
+#  Uninstaller for CarPlay navigation on the HUD. Restores stock config from the
 #  backups install.sh made (/data_persist/*.bak_precphud) and removes the .so.
-#  Usage:  sh uninstall.sh   (over SSH, or via run.sh from USB)
+#  ==================  PATCH BY: KID MIXER-MODER  ==================
+#  Usage:  sh uninstall.sh   (over SSH, or via tweaks.sh from USB)
 # ============================================================================
 set -u
 TAG="[cp-hud uninstall]"
