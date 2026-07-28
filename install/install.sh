@@ -24,17 +24,22 @@ die() { echo "$TAG ERROR: $*"; mount -o remount,ro / 2>/dev/null; exit 1; }
 [ -f /jci/sm/sm.conf ] || die "not a CMU (no /jci/sm/sm.conf) — aborting"
 log "installing from $SO_SRC ($(wc -c < "$SO_SRC") bytes)"
 
-# --- pick the sm config that actually launches jciCARPLAY --------------------
-# Wireless-CarPlay (WCP) units boot from sm_WCP.conf; the OEM service manager
-# MERGES the jciCARPLAY stanza of sm.conf + sm_WCP.conf, so injecting LD_PRELOAD
-# into BOTH yields two environ_vars -> jciCARPLAY crash-loops. So: patch
-# sm_WCP.conf if present, otherwise sm.conf — never both.
-if [ -f /jci/sm/sm_WCP.conf ]; then
+# --- pick the sm config the SM actually launches jciCARPLAY from -------------
+# /usr/bin/autostart runs get_board_type.sh: exit 2 = WCP hardware -> the SM
+# boots `sm -f sm_WCP.conf`; otherwise `sm -f sm.conf`. sm_WCP.conf ALSO ships
+# on non-WCP units, so choosing by file presence would wrongly patch a config
+# that is never launched. Run the same hardware probe and patch the active one.
+if [ -x /jci/scripts/get_board_type.sh ]; then
+  /jci/scripts/get_board_type.sh >/dev/null 2>&1; BT=$?
+else
+  BT=""
+fi
+if [ "$BT" = "2" ] && [ -f /jci/sm/sm_WCP.conf ]; then
   CONFS="/jci/sm/sm_WCP.conf"
-  log "WCP unit detected -> patching sm_WCP.conf only"
+  log "WCP hardware (get_board_type.sh=2) -> patching sm_WCP.conf"
 else
   CONFS="/jci/sm/sm.conf"
-  log "non-WCP unit -> patching sm.conf"
+  log "no WCP hardware (get_board_type.sh=${BT:-n/a}) -> patching sm.conf"
 fi
 
 # --- remount rootfs rw -------------------------------------------------------

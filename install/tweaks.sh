@@ -62,13 +62,22 @@ if [ $CHOICE -eq 0 ]; then
   [ -f /jci/sm/sm.conf ] || fail "not a Mazda CMU (no /jci/sm/sm.conf)"
   log "installing from $SO_SRC ($(wc -c < "$SO_SRC") bytes)"
 
-  # --- auto-detect Wireless-CarPlay vs wired ---
-  if [ -f /jci/sm/sm_WCP.conf ]; then
+  # --- detect the ACTIVE config the way the firmware itself does -------------
+  # /usr/bin/autostart runs get_board_type.sh: exit 2 = WCP hardware -> the SM
+  # boots `sm -f sm_WCP.conf`; otherwise `sm -f sm.conf`. Choosing by mere file
+  # presence is WRONG -- sm_WCP.conf ships on non-WCP units too, so it would
+  # patch a config that is never launched. Run the same probe.
+  if [ -x /jci/scripts/get_board_type.sh ]; then
+    /jci/scripts/get_board_type.sh >/dev/null 2>&1; BT=$?
+  else
+    BT=""
+  fi
+  if [ "$BT" = "2" ] && [ -f /jci/sm/sm_WCP.conf ]; then
     CONFS="/jci/sm/sm_WCP.conf"
-    log "Wireless-CarPlay unit -> patching sm_WCP.conf only"
+    log "Wireless-CarPlay hardware (get_board_type.sh=2) -> patching sm_WCP.conf"
   else
     CONFS="/jci/sm/sm.conf"
-    log "wired-CarPlay unit -> patching sm.conf"
+    log "no WCP hardware (get_board_type.sh=${BT:-n/a}) -> patching sm.conf"
   fi
 
   mount -o remount,rw / 2>/dev/null || fail "remount rw failed"
